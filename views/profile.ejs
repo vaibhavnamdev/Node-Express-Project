@@ -1,0 +1,294 @@
+<html>
+  <head>
+    <title>Login</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  </head>
+
+<body class="body" onload="disapper()">
+<div class="wrap">
+			<div id='myanchor' class="app-header">
+    				<div class="header-container clearfix">
+    				
+    				<div class="logo">
+        				<a id ="home" href="/" action="GET">Yelp</a>
+    				</div>
+         	
+         		
+         		<div class = "header-account webview-hidden">
+         		<ul class="logged-out-nav">
+        		<li>
+            	<a class="log-in" >Hello!..</a> 
+            	<a id="header-sign-up" class="ybtn ybtn-primary header-button sign-up"><%= user['0'] %></a>
+        		
+        		</li>
+        		<li class="text-centered">
+            	<a class="log-in" href="/logout" action="GET">
+                LOG OUT
+            	</a><br>
+            	
+        		</li>
+        		
+         		</div>
+         		</div>
+           </div>
+			<div id="super-container">
+			<div class="homepage">
+				
+					<p class="smallheader">Yelp</p>
+					<div id="page-header">
+					<div class="clearfix layout-block layout-a layout-border">
+					<div class="column column-alpha main">
+					 <br>
+					<h2 class="new">Your Next Review Awaits</h2>
+					
+					<div class="ysection" id="signup-pitch">
+					 <div class="content">
+			        
+			        <p class="embossed-text-white">
+			               Type your review for: <%=suggest%>		
+			       <form action="/postReview" id="post-form" method="GET">
+			        </p>
+			        
+			        <a class="rating1 ">Category:  </a>
+			        <select id="catpop" name="categories"  onChange="myPopulate()">
+			         <%  
+						for(var i=0; i<category.length; i++) {%>
+							<option value="<%=category[i].categoryName%>" <% if(category[i].categoryName===suggest){%>selected<%}%> ><%=category[i].categoryName%></option>  
+						<% } %> 
+						</select>
+						
+						 <a class="rating1" style="cursor:pointer" onclick="disableSelf()">Suggested Elements</a>
+						<select name="element" id ="mySelect">
+						 <% 
+						for(var i=0; i<suggestion.length; i++) {%>
+							<%if(suggestion[i].Category===suggest){%>
+							<option value="<%=suggestion[i].ElementName%>" <%if(i===0){%>selected<%}%>><%=suggestion[i].ElementName%></option>  
+							<%}%>
+						<% } %>
+							</select>
+						<br><br>
+						<p id="describe"></p>
+						
+						<a style="cursor:pointer" onclick = "disableElement()">Click to Add Other Element</a><br>
+						<label id="elementbox1">  <a class="rating1">Element Name:  </a></label>				
+						<input type="text" id="elementbox2" value="" name="newElement"></input>
+						
+						<label id="elementbox3">  <a class="rating1">Description:  </a></label>				
+						<input type="text" id="elementbox4" value="" name="description"></input><br>
+						
+						<br><a class="rating1">RATING.......     </a><a class="rating2"> MIN... <input type="radio" name="rate" value="1">    1
+						</a><a class="rating3"><input type="radio" name="rate" value="2">     2 
+						<input type="radio" name="rate" value="3">     3 </a>
+						<a rating4 class="rating4"><input type="radio" name="rate" value="4">     4</a>
+						<a rating5 class="rating5"><input type="radio" name="rate" value="5">     5 ...MAX</a>
+						        	
+			      
+			        	<div class="review-textbox">
+       			 		<textarea id="review" class="review-textarea expanded" autocomplete="off" data-component-bound="true" style="width:500px" onfocus="myFunction(this)" onblur="myReset()" name="reviewMatter">Start your review...</textarea>
+     			   		<div class="hidden-text-measurer" data-component-bound="true"><br><br></div>
+   						 </div>
+			        <br><br>
+			        <button  type="submit" id="submit" class="ybtn ybtn-primary ytype" onclick="submitfunction">POST REVIEW</a>
+			        </form>
+			        </div>
+			    	
+			    	</div>
+			    	
+		
+			    	
+			    	</div>
+			    
+			    	<div class="column column-beta sidebar">
+			    		<h2 class="new">PROFILE</h2></br>
+			    		<h2 class="smallheader">Hi! <%=user['0']%></h2>
+			    		<br><a class="log-in"><%= user['1'] %></a>
+			    	</div>
+			    	
+			    	<div class="header-with-ui"><br>
+            		<h2 id="All" class="new">Recent Activity</h2>
+    
+            		<div class="hd-ui">
+                
+ 						<ul class="tabs-pill js-tabs"><br>
+   						<li  id="Allelement" class="tab inline-block <%=allhigh%>"><a id="All" style="cursor:pointer" onclick="populateType(this.id)">All Recent</a> <span class="ybadge ybadge-notification hidden"></span></li>
+						<li  id ="yourselection" class="tab inline-block <%=yourhigh%>"><a id="Your" style="cursor:pointer" onclick="populateType(this.id)">Your Activity</a> <span class="ybadge ybadge-notification hidden"></span></li>
+   						 </ul>
+					 </div>
+
+
+ 
+			    </div>	
+			    </div>
+			    
+     		</div>
+     		 
+<div class="clearfix layout-block layout-a layout-border">
+					<div class="column column-alpha main">
+
+<ul>
+
+</ul>
+
+<ul>
+<%  
+for(var i=0; i<review.length; i++) {%>
+	<label><h3 class="categoryLabel"><%=review[i].category%></h3></label><br>
+	<label name="hithisis" class="elementsReviewLabel"> <%=review[i].elements%>:     </label>&nbsp &nbsp &nbsp &nbsp Posted on: <%=review[i].Time %><br><br>
+	<li><label>Review: &nbsp &nbsp
+	</label><p class="displayReview" id="<%=review[i].ReviewId%>_review"><%= review[i].Review %></p></li><br>
+	<div id="<%=review[i].ReviewId%>_edit" style='display:none'>
+	
+	
+	<form action="/editReview" id="edit-form" method="GET">
+	<input type="hidden" name="id_No" value="<%=review[i].ReviewId%>" ></input>
+	<textarea id ='<%=review[i].ReviewId%>_editReview' style="width: 500px; height: 40px;"  name='edit' value=''></textarea><br>
+	
+	<br><a class="rating1">RATING.......     </a><a class="rating2"> MIN... <input type="radio" name="rate" value="1">    1
+						</a><a class="rating3"><input type="radio" name="rate" value="2">     2 
+						<input type="radio" name="rate" value="3">     3 </a>
+						<a rating4 class="rating4"><input type="radio" name="rate" value="4">     4</a>
+						<a rating5 class="rating5"><input type="radio" name="rate" value="5">     5 ...MAX</a>
+	
+	
+	<br><br><a href="/editCurrentReview"><input type="submit" value="Done Editing"></a><br><br>
+	</form>
+	
+	</div>
+	<div class=ratings>
+	<li class="sep" class="liveRating">    
+       
+      <a class="star_<%=review[i].Rating%>" id ="ratesStars"></a>
+   
+	<%if(email===review[i].email){%>
+	 <form  id="delete-form" action="/deletePost" method="POST">				
+	<input type="hidden" name="id_NoDel" value="<%=review[i].ReviewId%>" ></input>
+	<input type="hidden" name="elementNameDel" value="<%=review[i].elements%>" ></input>
+	<input type="hidden" name="categoryDel" value="<%=review[i].category%>" ></input>
+	 &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp<a class="editAndDel" id="<%=review[i].ReviewId%>" onclick="generateEdit(this.id)">Edit Review</a>&nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp
+	 <input class="deletePostbutton" type="submit" value="X"></input>
+	</form>
+	<%}%>
+	
+	
+	
+	<p class=review></p>
+	<div>
+<% } %>
+</ul>
+     		 
+     		</div>
+     		
+     		<div class="column column-beta sidebar">
+     		
+     		<br>
+     		  <h2 class="smallheader">CATEGORIES</h2>
+     		  <div class="categoryPopulate"><br>
+     		  <ul name="categories" class="tabs-cat js-tabs">
+			         <%  
+						for(var i=0; i<category.length; i++) {%>
+							<li class="teb inline-block select" value="<%=category[i].categoryName%>"><a style="cursor:pointer" onclick="populateType(this.id)" id="<%=category[i].categoryName%>"><%=category[i].categoryName%></a></li><br> 
+							
+						<% } %>
+						
+							</ul>
+     		</div>
+     		</div>
+     		
+     		
+     		</div>
+     </div>		
+	<div class="bottomTop">
+	<a onclick="moveScroll()">GO TOP</a>
+	<a id href="/"></a>
+	</div>
+</div>
+<p class="rights"><br><br>All Rights Reserved: yelp.com<br> Protype developed by <a href="http://www.linkedin.com/pub/vaibhav-namdev/34/344/495">Vaibhav Namdev</a> <br>As Assisgnment 1 CMPE:273 SJSU<br></p>
+<a id="updateList" href="/"></a>
+<script>
+function myFunction(x) {
+    x.style.height = "150px";
+}
+function myReset(){
+document.getElementById("review").style.height = "10px";
+}
+function myPopulate(){
+var get = document.getElementById("catpop");
+var SelCategory = get.options[get.selectedIndex].value;
+document.cookie="suggs="+SelCategory+";";
+document.getElementById("home").click();
+}
+
+function populateType(catName){
+if(catName==="Your"){
+document.cookie="yourhighlight = selected;";
+document.cookie="Allhighlight = no;";
+var get = document.getElementById(catName);
+document.cookie="category="+catName+";";
+document.getElementById("updateList").click();
+}
+else{
+document.cookie="Allhighlight = selected;";
+document.cookie="yourhighlight = no;";
+var get = document.getElementById(catName);
+document.cookie="category="+catName+";";
+document.getElementById("updateList").click();
+}
+}
+function disableElement(){
+document.getElementById("mySelect").hidden = true;
+document.getElementById("elementbox1").hidden = false;
+document.getElementById("elementbox2").hidden = false;
+document.getElementById("elementbox3").hidden = false;
+document.getElementById("elementbox4").hidden = false;
+document.cookie="action=normal;";
+document.cookie="action=add;";
+}
+function disableSelf(){
+document.getElementById("mySelect").hidden = false;
+document.getElementById("elementbox1").hidden = true;
+document.getElementById("elementbox2").hidden = true;
+document.getElementById("elementbox3").hidden = true;
+document.getElementById("elementbox4").hidden = true;
+document.cookie="action=normal;";
+}
+
+function disapper(){
+document.cookie="action=normal;";
+document.getElementById("elementbox1").hidden = true;
+document.getElementById("elementbox2").hidden = true;
+document.getElementById("elementbox3").hidden = true;
+document.getElementById("elementbox4").hidden = true;
+}
+
+function deleteSubmit(){
+document.getElementById('delete-form').submit();
+}
+
+function generateEdit(clicked_id) {
+    
+var design=document.getElementById(clicked_id+"_edit");
+var valueReview=document.getElementById(clicked_id+"_review").innerHTML; 
+var e = document.getElementById(clicked_id+"_review");
+var t=document.getElementById(clicked_id+"_edit");       
+       if(e.style.display == 'none'){
+         document.getElementById(clicked_id).innerHTML="Edit Review";
+         e.style.display = 'block';
+         t.style.display ='none';
+         }
+     	else{
+          document.getElementById(clicked_id).innerHTML="Cancel";
+          e.style.display = 'none';
+         t.style.display ='block';
+         document.getElementById(clicked_id+"_editReview").innerHTML=valueReview;
+          }
+}
+function moveScroll(){
+location.href="#myanchor";
+}
+</script>
+</body> 
+</html>
