@@ -1,0 +1,16 @@
+{
+  "name": "NodeExpress",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "ejs": "*",
+    "express": "3.4.8",
+    "express-session": "^1.8.2",
+    "passport-stormpath": "^0.2.1",
+    "stormpath": "^0.6.0"
+  }
+}
